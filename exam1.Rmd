@@ -1,0 +1,54 @@
+---
+title: "Exam1"
+author: "Daniel Nguyen"
+date: "2/17/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DBI)
+db = dbConnect(RSQLite::SQLite(), dbname = "stocks_February.sqlite")
+```
+
+## Queries
+
+### query 1
+```{sql, connection=db, output.var="q1"}
+SELECT * from fundamentals
+where market_date = '2020-02-23' and market_cap > 100000000
+and dividend_yield between 0 and 0.1
+```
+
+
+### Query 2
+```{sql, connection=db, output.var="q2"}
+SELECT * from fundamentals
+where market_date = '2022-02-07' and market_cap > 100000000
+and dividend_yield between 0 and 0.1
+```
+
+
+
+### Query 3
+
+```{sql, connection=db, output.var='q3'}
+with q1 as (SELECT * from fundamentals
+  where market_date = '2020-02-23' and market_cap > 100000000 and dividend_yield between 0 and 0.1),
+     q2 as (SELECT * from fundamentals
+where market_date = '2022-02-07' and market_cap > 100000000
+and dividend_yield between 0 and 0.1
+     )
+
+select * from q1 
+inner join q2 on q1.symbol = q2.symbol
+```
+
+
+## Question
+
+```{r}
+
+```
+
+
